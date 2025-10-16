@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fila de Processos - Autorização Centralizada</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e5f2f0;
+      margin: 0;
+    }
+    header {
+      background-color: #004c45;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tabs {
+      display: flex;
+      background-color: #00695c;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-right: 1px solid #004c45;
+    }
+    .tab:hover, .tab.active {
+      background-color: #004c45;
+    }
+    .content {
+      padding: 20px;
+      background-color: #fff;
+    }
+    h2 {
+      color: #004c45;
+      margin-bottom: 20px;
+    }
+    .filtros {
+      background-color: #f0f7f6;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .filtros label {
+      margin-right: 10px;
+      font-weight: bold;
+      color: #004c45;
+    }
+    .filtros input, .filtros select {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    .filtros button {
+      padding: 6px 12px;
+      border: none;
+      background-color: #00796b;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .filtros button:hover {
+      background-color: #005f53;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #00796b;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tr:hover {
+      background-color: #d7f0eb;
+      cursor: pointer;
+    }
+    .buttons-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 15px;
+    }
+    .buttons-footer button {
+      margin-left: 10px;
+      padding: 8px 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buttons-footer button:hover {
+      background-color: #005f53;
+    }
+    .selected {
+      background-color: #c5ede4 !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">SICOOB</div>
+    <div>Autorização Centralizada</div>
+  </header>
+
+  <div class="tabs">
+    <div id="centralizacao" class="tab active" onclick="trocarAba('centralizacao')">CENTRALIZAÇÃO</div>
+    <div id="renda" class="tab" onclick="trocarAba('renda')">RENDA REDUZIDA</div>
+    <div id="agro" class="tab" onclick="trocarAba('agro')">PROCESSOS AGRO</div>
+  </div>
+
+  <div class="content">
+    <div class="filtros">
+      <label for="codigoAutorizacao">Cód. Autorização:</label>
+      <input type="text" id="codigoAutorizacao">
+      <label for="cpfCnpj">CPF/CNPJ:</label>
+      <input type="text" id="cpfCnpj">
+      <label for="coopDestino">Coop. Destino:</label>
+      <input type="text" id="coopDestino">
+      <label for="tipoAutorizacao">Tipo de Autorização:</label>
+      <select id="tipoAutorizacao">
+        <option value="TODOS">TODOS</option>
+        <option value="BEM_NOVO">BEM_NOVO</option>
+        <option value="BEM">BEM</option>
+        <option value="CERTIDAO">CERTIDAO</option>
+        <option value="ENDERECO">ENDERECO</option>
+        <option value="FONTE_RENDA">FONTE_RENDA</option>
+        <option value="TRIBUTACAO">TRIBUTACAO</option>
+        <option value="PESSOA">PESSOA</option>
+        <option value="PRODUTIVIDADE">PRODUTIVIDADE</option>
+        <option value="PRODUTOR">PRODUTOR</option>
+        <option value="RELACIONAMENTO">RELACIONAMENTO</option>
+        <option value="RESPONSAVEL">RESPONSAVEL</option>
+      </select>
+      <button onclick="filtrar()">FILTRAR</button>
+      <button onclick="limpar()">LIMPAR</button>
+    </div>
+
+    <div id="conteudo-centralizacao" class="tabela-conteudo" style="display:block;">
+      <table>
+        <thead>
+          <tr>
+            <th>Data Solicitação</th>
+            <th>Código de Autorização</th>
+            <th>CPF/CNPJ</th>
+            <th>Cooperativa de Origem</th>
+            <th>Cooperativa de Destino</th>
+            <th>Tipo de Autorização</th>
+            <th>Tipo de Operação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-tipo="FONTE_RENDA">
+            <td>16/10/2025 11:58:29</td>
+            <td>194292398</td>
+            <td>28.592.734/0001-23</td>
+            <td>5004-93</td>
+            <td>5004-93</td>
+            <td>FONTE_RENDA</td>
+            <td>Alteração</td>
+          </tr>
+          <tr data-tipo="PRODUTIVIDADE">
+            <td>15/10/2025 11:38:32</td>
+            <td>193633028</td>
+            <td>466.244.576-00</td>
+            <td>3098-00</td>
+            <td>3098-00</td>
+            <td>PRODUTIVIDADE</td>
+            <td>Exclusão</td>
+          </tr>
+          <tr data-tipo="BEM_NOVO">
+            <td>14/10/2025 09:10:15</td>
+            <td>200056781</td>
+            <td>051.751.421-43</td>
+            <td>3098-00</td>
+            <td>3098-00</td>
+            <td>BEM_NOVO</td>
+            <td>Inclusão</td>
+          </tr>
+          <tr data-tipo="PRODUTOR">
+            <td>13/10/2025 08:47:00</td>
+            <td>200045896</td>
+            <td>756.909.422-00</td>
+            <td>4229-00</td>
+            <td>4229-00</td>
+            <td>PRODUTOR</td>
+            <td>Inclusão</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="buttons-footer">
+      <button onclick="visualizar()">VISUALIZAR</button>
+      <button onclick="fechar()">FECHAR</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedRow = null;
+
+    function trocarAba(aba) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(aba).classList.add('active');
+      document.querySelectorAll('.tabela-conteudo').forEach(c => c.style.display = 'none');
+      document.getElementById('conteudo-' + aba).style.display = 'block';
+    }
+
+    document.querySelectorAll('tbody tr').forEach(row => {
+      row.addEventListener('click', () => {
+        document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
+        row.classList.add('selected');
+        selectedRow = row;
+      });
+    });
+
+    function visualizar() {
+      if (!selectedRow) {
+        alert('Selecione um processo na tabela para visualizar.');
+        return;
+      }
+
+      const codigo = selectedRow.children[1].textContent.trim();
+      const tipoRaw = selectedRow.dataset.tipo.toUpperCase();
+      const cpf = selectedRow.children[2].textContent.trim();
+
+      const pessoa = cpf.replace(/\D/g, '').length > 11 ? 'PJ' : 'PF';
+      const tipo = (tipoRaw === 'FONTE_RENDA') ? `FONTE_RENDA_${pessoa}` : tipoRaw;
+
+      window.location.href = `visualizar_processo.html?tipo=${encodeURIComponent(tipo)}&id=${encodeURIComponent(codigo)}`;
+    }
+
+    function fechar() {
+      alert('Fechando tela... (simulação)');
+    }
+
+    function filtrar() {
+      const cod = document.getElementById('codigoAutorizacao').value.trim().toLowerCase();
+      const cpf = document.getElementById('cpfCnpj').value.trim().toLowerCase();
+      const coop = document.getElementById('coopDestino').value.trim().toLowerCase();
+      const tipo = document.getElementById('tipoAutorizacao').value;
+
+      document.querySelectorAll('tbody tr').forEach(linha => {
+        const matchCod = linha.children[1].textContent.toLowerCase().includes(cod);
+        const matchCpf = linha.children[2].textContent.toLowerCase().includes(cpf);
+        const matchCoop = linha.children[4].textContent.toLowerCase().includes(coop);
+        const matchTipo = (tipo === 'TODOS' || linha.dataset.tipo === tipo);
+
+        linha.style.display = (matchCod && matchCpf && matchCoop && matchTipo) ? '' : 'none';
+      });
+    }
+
+    function limpar() {
+      document.getElementById('codigoAutorizacao').value = '';
+      document.getElementById('cpfCnpj').value = '';
+      document.getElementById('coopDestino').value = '';
+      document.getElementById('tipoAutorizacao').value = 'TODOS';
+      document.querySelectorAll('tbody tr').forEach(linha => linha.style.display = '');
+      selectedRow = null;
+    }
+  </script>
+</body>
+</html>
